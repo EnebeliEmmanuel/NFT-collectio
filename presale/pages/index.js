@@ -1,8 +1,9 @@
+
 import { Contract, providers, utils } from "ethers";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
-import { abi, NFT_CONTRACT_ADDRESS } from "../constants";
+import { abi, NFT_CONTRACT_ADDRESS } from "../constants/index.js";
 import styles from "../styles/Home.module.css";
 
 // Chakra
@@ -310,6 +311,7 @@ export default function Home() {
         await getTokenIdsMinted();
       }, 5 * 1000);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletConnected]);
 
   /*
@@ -319,56 +321,107 @@ export default function Home() {
     // If wallet is not connected, return a button which allows them to connect their wllet
     if (!walletConnected) {
       return (
-        <button onClick={connectWallet} className={styles.button}>
+        <Button
+          onClick={connectWallet}
+          bg="blue"
+          color={'white'}
+          _hover={{
+            bg: 'blue.600',
+          }}
+          p={{ base: '8' }}
+        >
           Connect your wallet
-        </button>
+        </Button>
       );
     }
 
     // If we are currently waiting for something, return a loading button
     if (loading) {
-      return <button className={styles.button}>Loading...</button>;
+      return  <Button
+      
+      bg="blue"
+      color={'white'}
+      _hover={{
+        bg: 'blue.600',
+      }}
+      p={{ base: '8' }}
+    >
+      Loading....
+    </Button>;
     }
 
     // If connected user is the owner, and presale hasnt started yet, allow them to start the presale
     if (isOwner && !presaleStarted) {
       return (
-        <button className={styles.button} onClick={startPresale}>
-          Start Presale!
-        </button>
+        <Button
+        onClick={startPresale}
+        bg="blue"
+        color={'white'}
+        _hover={{
+          bg: 'blue.600',
+        }}
+        p={{ base: '8' }}
+      >
+       Start Presale!
+      </Button>
+        
       );
     }
 
     // If connected user is not the owner but presale hasn't started yet, tell them that
     if (!presaleStarted) {
       return (
-        <div>
-          <div className={styles.description}>Presale hasnt started!</div>
-        </div>
+        <Box>
+          <Text fontSize={{ base: 'md', lg: 'lg' }}
+            color={'gray.500'}
+            lineHeight="1"
+            m="2rem 0">Presale hasnt started!</Text>
+        </Box>
       );
     }
 
     // If presale started, but hasn't ended yet, allow for minting during the presale period
     if (presaleStarted && !presaleEnded) {
       return (
-        <div>
-          <div className={styles.description}>
+        <Box>
+          <Box fontSize={{ base: 'md', lg: 'lg' }}
+            color={'gray.500'}
+            lineHeight="1"
+            m="2rem 0">
             Presale has started!!! If your address is whitelisted, Mint a
             Crypto Dev 🥳
-          </div>
-          <button className={styles.button} onClick={presaleMint}>
-            Presale Mint 🚀
-          </button>
-        </div>
+          </Box>
+          <Button
+       onClick={presaleMint}
+        bg="blue"
+        color={'white'}
+        _hover={{
+          bg: 'blue.600',
+        }}
+        p={{ base: '8' }}
+      >
+       Presale Mint 🚀
+      </Button>
+         
+        </Box>
       );
     }
 
     // If presale started and has ended, its time for public minting
     if (presaleStarted && presaleEnded) {
       return (
-        <button className={styles.button} onClick={publicMint}>
-          Public Mint 🚀
-        </button>
+        <Button
+        onClick={publicMint}
+         bg="blue"
+         color={'white'}
+         _hover={{
+           bg: 'blue.600',
+         }}
+         p={{ base: '8' }}
+       >
+       Public Mint 🚀
+       </Button>
+     
       );
     }
   };
